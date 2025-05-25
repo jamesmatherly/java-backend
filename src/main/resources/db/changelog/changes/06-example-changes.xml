@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.20.xsd">
+
+    <!-- Example: Create a new table -->
+    <changeSet id="1" author="your-name">
+        <createTable tableName="example_table">
+            <column name="id" type="bigint">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+    <!-- Example: Add a column to an existing table -->
+    <changeSet id="2" author="your-name">
+        <addColumn tableName="example_table">
+            <column name="description" type="text"/>
+        </addColumn>
+    </changeSet>
+
+    <!-- Example: Create an index -->
+    <changeSet id="3" author="your-name">
+        <createIndex tableName="example_table" indexName="idx_example_name">
+            <column name="name"/>
+        </createIndex>
+    </changeSet>
+
+    <!-- Example: Insert data -->
+    <changeSet id="4" author="your-name">
+        <insert tableName="example_table">
+            <column name="id" value="1"/>
+            <column name="name" value="Example 1"/>
+        </insert>
+    </changeSet>
+
+</databaseChangeLog> 
