@@ -7,7 +7,7 @@
 
     <changeSet id="05-create-positions" author="liquibase">
         <createTable tableName="positions">
-            <column name="id" type="bigint">
+            <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="stock_symbol" type="varchar(10)">
@@ -21,8 +21,8 @@
             </column>
             <column name="current_price" type="decimal(10,2)"/>
             <column name="total_value" type="decimal(10,2)"/>
-            <column name="portfolio_id" type="bigint">
-                <constraints nullable="false" foreignKeyName="fk_positions_portfolio" referencedTableName="portfolios" referencedColumnNames="id"/>
+            <column name="portfolio_id" type="varchar(36)">
+                <constraints nullable="false" foreignKeyName="fk_positions_portfolio" referencedTableName="portfolios" referencedColumnNames="id" deleteCascade="true"/>
             </column>
         </createTable>
     </changeSet>

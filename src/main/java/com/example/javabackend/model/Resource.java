@@ -1,5 +1,7 @@
 package com.example.javabackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -25,5 +27,6 @@ public class Resource {
 
     @ManyToOne
     @JoinColumn(name = "step_id")
+    @JsonBackReference
     private Step step;
 } 

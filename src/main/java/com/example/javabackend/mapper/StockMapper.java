@@ -22,7 +22,6 @@ public class StockMapper {
         stock.setLow(quote.getLow());
         stock.setOpen(quote.getOpen());
         stock.setPreviousClose(quote.getPreviousClose());
-        stock.setVolume(quote.getVolume());
         
         return stock;
     }

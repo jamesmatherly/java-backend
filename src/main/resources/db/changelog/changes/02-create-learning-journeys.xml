@@ -17,9 +17,12 @@
                 <constraints nullable="false"/>
             </column>
             <column name="user_id" type="varchar(36)">
-                <constraints nullable="false" foreignKeyName="fk_learning_journeys_user" referencedTableName="users" referencedColumnNames="id"/>
+                <constraints nullable="false" foreignKeyName="fk_learning_journeys_user" referencedTableName="users" referencedColumnNames="id" deleteCascade="true"/>
             </column>
         </createTable>
+        <createIndex indexName="idx_journey_user" tableName="learning_journeys">
+            <column name="user_id"/>
+        </createIndex>
     </changeSet>
 
 </databaseChangeLog> 

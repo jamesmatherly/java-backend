@@ -10,6 +10,6 @@
     <include file="db/changelog/changes/03-create-steps.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/04-create-portfolios.xml" relativeToChangelogFile="false"/>
     <include file="db/changelog/changes/05-create-positions.xml" relativeToChangelogFile="false"/>
-    <include file="db/changelog/changes/06-example-changes.xml" relativeToChangelogFile="false"/>
+    <include file="db/changelog/changes/06-create-resources.xml" relativeToChangelogFile="false"/>
 
 </databaseChangeLog> 

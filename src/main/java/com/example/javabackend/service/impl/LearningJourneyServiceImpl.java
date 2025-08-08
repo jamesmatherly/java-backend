@@ -1,8 +1,10 @@
 package com.example.javabackend.service.impl;
 
 import com.example.javabackend.model.LearningJourney;
+import com.example.javabackend.model.Step;
 import com.example.javabackend.model.User;
 import com.example.javabackend.repository.LearningJourneyRepository;
+import com.example.javabackend.repository.StepRepository;
 import com.example.javabackend.service.LearningJourneyService;
 import com.example.javabackend.service.AuthService;
 import org.springframework.stereotype.Service;
@@ -14,17 +16,20 @@ import java.util.List;
 public class LearningJourneyServiceImpl implements LearningJourneyService {
     
     private final LearningJourneyRepository repository;
+    private final StepRepository stepRepository;
     private final AuthService authService;
 
-    public LearningJourneyServiceImpl(LearningJourneyRepository repository, AuthService authService) {
+    public LearningJourneyServiceImpl(LearningJourneyRepository repository, StepRepository stepRepository, AuthService authService) {
         this.repository = repository;
+        this.stepRepository = stepRepository;
         this.authService = authService;
     }
 
     @Override
     public List<LearningJourney> getAllJourneys() {
         User currentUser = authService.getCurrentUser();
-        return repository.findByUser(currentUser);
+        List<LearningJourney> journeys = repository.findByUser(currentUser);
+        return journeys;
     }
 
     @Override
@@ -77,5 +82,16 @@ public class LearningJourneyServiceImpl implements LearningJourneyService {
         
         repository.saveAll(allJourneys);
         return repository.save(primaryJourney);
+    }
+
+    @Override
+    public LearningJourney addStep(Step step, String journeyId) {
+        LearningJourney journey = getJourney(journeyId);
+        if (journey == null) {
+            throw new RuntimeException("Journey not found");
+        }
+        step.setJourney(journey);
+        stepRepository.save(step);
+        return journey;
     }
 } 

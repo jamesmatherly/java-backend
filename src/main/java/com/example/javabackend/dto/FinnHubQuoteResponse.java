@@ -25,7 +25,4 @@ public class FinnHubQuoteResponse {
     
     @JsonProperty("pc")
     private Double previousClose;
-    
-    @JsonProperty("v")
-    private Long volume;
 } 

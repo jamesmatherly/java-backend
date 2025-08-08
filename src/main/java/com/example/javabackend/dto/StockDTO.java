@@ -6,13 +6,12 @@ import lombok.Data;
 public class StockDTO {
     private String symbol;
     private String name;
-    private double price;
-    private double change;
-    private double changePercent;
-    private double marketCap;
-    private long volume;
-    private double high;
-    private double low;
-    private double open;
-    private double previousClose;
+    private Double price;
+    private Double change;
+    private Double changePercent;
+    private Double marketCap;
+    private Double high;
+    private Double low;
+    private Double open;
+    private Double previousClose;
 } 

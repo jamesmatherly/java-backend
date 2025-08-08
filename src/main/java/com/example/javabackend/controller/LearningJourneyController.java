@@ -1,6 +1,7 @@
 package com.example.javabackend.controller;
 
 import com.example.javabackend.model.LearningJourney;
+import com.example.javabackend.model.Step;
 import com.example.javabackend.service.LearningJourneyService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +20,8 @@ public class LearningJourneyController {
 
     @GetMapping
     public ResponseEntity<List<LearningJourney>> getAllJourneys() {
-        return ResponseEntity.ok(journeyService.getAllJourneys());
+        List<LearningJourney> journeys = journeyService.getAllJourneys();
+        return ResponseEntity.ok(journeys);
     }
 
     @GetMapping("/{journeyId}")
@@ -29,7 +31,8 @@ public class LearningJourneyController {
 
     @PostMapping
     public ResponseEntity<LearningJourney> createJourney(@RequestBody LearningJourney journey) {
-        return ResponseEntity.ok(journeyService.createJourney(journey));
+        LearningJourney createdJourney = journeyService.createJourney(journey);
+        return ResponseEntity.ok(createdJourney);
     }
 
     @PutMapping("/{journeyId}")
@@ -48,5 +51,11 @@ public class LearningJourneyController {
     @PutMapping("/{journeyId}/primary")
     public ResponseEntity<LearningJourney> setJourneyAsPrimary(@PathVariable String journeyId) {
         return ResponseEntity.ok(journeyService.setJourneyAsPrimary(journeyId));
+    }
+
+    @PostMapping("/{journeyId}/steps")
+    public ResponseEntity<LearningJourney> addStep(@PathVariable String journeyId, @RequestBody Step step) {
+        LearningJourney createdJourney = journeyService.addStep(step, journeyId);
+        return ResponseEntity.ok(createdJourney);
     }
 } 
