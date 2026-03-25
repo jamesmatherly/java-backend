@@ -15,11 +15,9 @@ import java.util.List;
 public class CognitoUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final JwtTokenValidator tokenValidator;
 
-    public CognitoUserDetailsService(UserRepository userRepository, JwtTokenValidator tokenValidator) {
+    public CognitoUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.tokenValidator = tokenValidator;
     }
 
     @Override
@@ -39,19 +37,6 @@ public class CognitoUserDetailsService implements UserDetailsService {
             return createUserDetails(user);
         } catch (Exception e) {
             throw new RuntimeException("Failed to create user details: " + e.getMessage(), e);
-        }
-    }
-
-    @Transactional
-    private User createNewUser(String username, String token) {
-        try {
-            String email = tokenValidator.getEmailFromToken(token);
-            User user = new User();
-            user.setUsername(username);
-            user.setEmail(email);
-            return userRepository.saveAndFlush(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create user: " + e.getMessage(), e);
         }
     }
 
