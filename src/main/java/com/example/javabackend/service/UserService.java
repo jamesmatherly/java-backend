@@ -3,7 +3,7 @@ package com.example.javabackend.service;
 import com.example.javabackend.model.User;
 import java.util.Optional;
 
-public interface UserService extends BaseService<User, Long> {
+public interface UserService extends BaseService<User, String> {
     Optional<User> findByUsername(String username);
     Optional<User> findByEmail(String email);
     boolean existsByUsername(String username);

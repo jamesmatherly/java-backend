@@ -25,7 +25,7 @@ public class CognitoUserDetailsService implements UserDetailsService {
     @Override
     @Transactional
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
+        User user = userRepository.findByEmail(username)
                 .orElseGet(() -> createNewUser(username));
         
         return createUserDetails(user);
@@ -34,8 +34,7 @@ public class CognitoUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails createUserDetails(String username, List<String> groups, String token) {
         try {
-            User user = userRepository.findByUsername(username)
-                    .orElseGet(() -> createNewUser(username, token));
+            User user = userRepository.findByUsername(username).get();
             
             return createUserDetails(user);
         } catch (Exception e) {
