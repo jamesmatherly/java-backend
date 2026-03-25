@@ -15,17 +15,22 @@ public class Position {
     private String id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonBackReference
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "portfolio_id", nullable = false)
     @JsonBackReference
     private Portfolio portfolio;
 
-    @Column(name = "stock_symbol", nullable = false)
+    @Column(name = "stock_symbol")
     private String stockSymbol;
 
     @Column(nullable = false)
     private Integer quantity;
 
-    @Column(nullable = false)
+    @Column(name = "average_price", nullable = false)
     private BigDecimal averagePrice;
 
     @Column(name = "current_price")
