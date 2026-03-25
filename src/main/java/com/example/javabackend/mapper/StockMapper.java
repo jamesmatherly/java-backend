@@ -7,14 +7,14 @@ import org.springframework.stereotype.Component;
 @Component
 public class StockMapper {
     
-    public StockDTO toStockDTO(FinnHubQuoteResponse quote, String symbol) {
+    public StockDTO toStockDTO(FinnHubQuoteResponse quote, String symbol, String name) {
         if (quote == null) {
             return null;
         }
 
         StockDTO stock = new StockDTO();
         stock.setSymbol(symbol);
-        stock.setName(symbol); // You might want to fetch company name from another endpoint
+        stock.setName(name); // You might want to fetch company name from another endpoint
         stock.setPrice(quote.getCurrentPrice());
         stock.setChange(quote.getChange());
         stock.setChangePercent(quote.getChangePercent());
