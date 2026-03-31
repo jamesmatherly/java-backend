@@ -43,10 +43,17 @@ public class PositionController extends BaseController<Position, String> {
         return ResponseEntity.ok(r);
     }
 
-    //TODO: Implement
     @PostMapping
     public ResponseEntity<ResponseDTO<Position>> executeTransaction(@RequestBody TransactionDto dto, @AuthenticationPrincipal String cognitoId) {
         ResponseDTO<Position> r = new ResponseDTO<>();
+        switch (dto.getTransactionType()) {
+            case BUY_TO_OPEN  -> positionService.buyToOpen(dto);
+            case BUY_TO_CLOSE -> positionService.buyToClose(dto);
+            case SELL_TO_OPEN  -> positionService.sellToOpen(dto);
+            case SELL_TO_CLOSE -> positionService.sellToClose(dto);
+        }
+        r.setDataList(positionService.findByPortfolioId(dto.getPortfolioId()));
+        r.setCount(r.getDataList().size());
         return ResponseEntity.ok(r);
     }
     
