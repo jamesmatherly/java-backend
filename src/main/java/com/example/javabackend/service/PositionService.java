@@ -12,4 +12,5 @@ public interface PositionService extends BaseService<Position, String> {
     public void buyToClose(TransactionDto dto);
     public List<Position> findByUserId(String userId);
     public List<Position> findByPortfolioId(String portfolioId);
+    public List<Position> findByPortfolioIdAndUserId(String portfolioId, String userId);
 }

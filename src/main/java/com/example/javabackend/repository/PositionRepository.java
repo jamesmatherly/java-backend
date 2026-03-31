@@ -11,4 +11,5 @@ import com.example.javabackend.model.Position;
 public interface PositionRepository extends JpaRepository<Position, String> {
     List<Position> findByUserId(String userId);
     List<Position> findByPortfolioId(String portfolioId);
+    List<Position> findByPortfolioIdAndUserId(String portfolioId, String userId);
 }

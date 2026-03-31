@@ -19,6 +19,7 @@ import com.example.javabackend.service.StockService;
 
 import jakarta.transaction.Transactional;
 
+//TODO: Implement various transaction types. Implement queues for Limit transactions
 @Service
 @Transactional
 public class PositionServiceImpl extends BaseServiceImpl<Position, String, PositionRepository> implements PositionService {
@@ -135,6 +136,11 @@ public class PositionServiceImpl extends BaseServiceImpl<Position, String, Posit
     @Override
     public List<Position> findByPortfolioId(String portfolioId) {
         return repository.findByPortfolioId(portfolioId);
+    }
+
+    @Override
+    public List<Position> findByPortfolioIdAndUserId(String portfolioId, String userId) {
+        return repository.findByPortfolioIdAndUserId(portfolioId, userId);
     }
 
     private Portfolio getParentPortfolio(TransactionDto dto) {
