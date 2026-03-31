@@ -38,26 +38,18 @@ public class PositionController extends BaseController<Position, String> {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<Position>> get(@RequestParam Map<String, String> params, @AuthenticationPrincipal String cognitoId) {
+    public ResponseEntity<ResponseDTO<Position>> getForCurrentUser(@RequestParam Map<String, String> params, @AuthenticationPrincipal String cognitoId) {
         ResponseDTO<Position> r = new ResponseDTO<>();
-        if (params.containsKey("userId")) {
-            r.setDataList(positionService.findByUserId(params.get("userId")));
-        } else if (params.containsKey("currentUser")) {
-            Optional<User> user = userService.findById(cognitoId);
-            if (user.isPresent()) {
-                r.setDataList(positionService.findByUserId(user.get().getId()));
-            }
-        } else if (params.containsKey("portfolioId")) {
-            r.setDataList(positionService.findByPortfolioId(params.get("portfolioId")));
-        } else {
-            r.setDataList(List.of());
-            r.setSuccess(false);
-            r.setErrorMessage("No valid search parameters provided");
+        if (params.containsKey("portfolioId")) {
+            r.setDataList(positionService.findByPortfolioIdAndUserId(params.get("portfolioId"), cognitoId));
+        }else if (params.containsKey("portfolioId")) {
+            r.setDataList(positionService.findByUserId(cognitoId));
         }
         r.setCount(r.getDataList().size());
         return ResponseEntity.ok(r);
     }
 
+    //TODO: Implement
     @PostMapping
     public ResponseEntity<ResponseDTO<Position>> executeTransaction(@RequestBody TransactionDto dto, @AuthenticationPrincipal String cognitoId) {
         ResponseDTO<Position> r = new ResponseDTO<>();

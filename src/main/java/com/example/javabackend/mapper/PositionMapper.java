@@ -13,10 +13,12 @@ public class PositionMapper {
         GetPositionsDTO retVal = new GetPositionsDTO();
         retVal.setId(position.getId());
         retVal.setSymbol(position.getStockSymbol());
+        //TODO: Do we need this field?
         retVal.setName("");
         retVal.setQuantity(position.getQuantity());
         retVal.setEntryPrice(position.getAveragePrice());
         retVal.setCurrentPrice(position.getCurrentPrice());
+        //TODO: Calculate these properly
         retVal.setChange(new BigDecimal(0));
         retVal.setChangePercent(new BigDecimal(0));
         return retVal;

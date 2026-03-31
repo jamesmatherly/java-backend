@@ -38,8 +38,7 @@ public class PortfolioController extends BaseController<Portfolio, String> {
 
     @GetMapping("/user")
     public ResponseEntity<List<GetPortfoliosDTO>> getForCurrentUser(@AuthenticationPrincipal String cognitoId) {
-        User user = userService.findById(cognitoId).get();
-        List<Portfolio> portfolios = portfolioService.findByUserId(user.getId());
+        List<Portfolio> portfolios = portfolioService.findByUserId(cognitoId);
         PortfolioMapper mapper = new PortfolioMapper();
 
         return ResponseEntity.ok(portfolios.stream().map(p -> mapper.toPortfoliosDTO(p)).toList());
