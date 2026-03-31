@@ -10,9 +10,7 @@
             <column name="id" type="varchar(36)">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="stock_symbol" type="varchar(10)">
-                <constraints nullable="false"/>
-            </column>
+            <column name="stock_symbol" type="varchar(10)"/>
             <column name="quantity" type="int">
                 <constraints nullable="false"/>
             </column>
@@ -23,6 +21,9 @@
             <column name="total_value" type="decimal(10,2)"/>
             <column name="portfolio_id" type="varchar(36)">
                 <constraints nullable="false" foreignKeyName="fk_positions_portfolio" referencedTableName="portfolios" referencedColumnNames="id" deleteCascade="true"/>
+            </column>
+            <column name="user_id" type="varchar(36)">
+                <constraints nullable="false" foreignKeyName="fk_positions_user" referencedTableName="users" referencedColumnNames="id" deleteCascade="true"/>
             </column>
         </createTable>
     </changeSet>

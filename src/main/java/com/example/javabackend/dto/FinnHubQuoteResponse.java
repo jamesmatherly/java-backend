@@ -1,28 +1,30 @@
 package com.example.javabackend.dto;
 
+import java.math.BigDecimal;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class FinnHubQuoteResponse {
     @JsonProperty("c")
-    private Double currentPrice;
+    private BigDecimal currentPrice;
     
     @JsonProperty("d")
-    private Double change;
+    private BigDecimal change;
     
     @JsonProperty("dp")
-    private Double changePercent;
+    private BigDecimal changePercent;
     
     @JsonProperty("h")
-    private Double high;
+    private BigDecimal high;
     
     @JsonProperty("l")
-    private Double low;
+    private BigDecimal low;
     
     @JsonProperty("o")
-    private Double open;
+    private BigDecimal open;
     
     @JsonProperty("pc")
-    private Double previousClose;
+    private BigDecimal previousClose;
 } 

@@ -15,53 +15,29 @@ import java.util.List;
 public class CognitoUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final JwtTokenValidator tokenValidator;
 
-    public CognitoUserDetailsService(UserRepository userRepository, JwtTokenValidator tokenValidator) {
+    public CognitoUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.tokenValidator = tokenValidator;
     }
 
+    // Spring's UserDetailsService interface requires this name; the parameter is the Cognito sub (user ID), not a username.
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username)
-                .orElseGet(() -> createNewUser(username));
-        
-        return createUserDetails(user);
+    public UserDetails loadUserByUsername(String cognitoId) throws UsernameNotFoundException {
+        return userRepository.findById(cognitoId)
+                .map(this::createUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + cognitoId));
     }
 
     @Transactional
-    public UserDetails createUserDetails(String username, List<String> groups, String token) {
-        try {
-            User user = userRepository.findByUsername(username)
-                    .orElseGet(() -> createNewUser(username, token));
-            
-            return createUserDetails(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create user details: " + e.getMessage(), e);
-        }
-    }
-
-    @Transactional
-    private User createNewUser(String username, String token) {
-        try {
-            String email = tokenValidator.getEmailFromToken(token);
+    public void ensureUser(String cognitoId, String email) {
+        if (!userRepository.existsById(cognitoId)) {
             User user = new User();
-            user.setUsername(username);
+            user.setId(cognitoId);
+            user.setUsername(email);
             user.setEmail(email);
-            return userRepository.saveAndFlush(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create user: " + e.getMessage(), e);
+            userRepository.saveAndFlush(user);
         }
-    }
-
-    @Transactional
-    private User createNewUser(String username) {
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail(username);
-        return userRepository.saveAndFlush(user);
     }
 
     private UserDetails createUserDetails(User user) {

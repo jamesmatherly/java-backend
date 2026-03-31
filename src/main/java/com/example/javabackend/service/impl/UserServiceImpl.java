@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class UserServiceImpl extends BaseServiceImpl<User, Long, UserRepository> implements UserService {
+public class UserServiceImpl extends BaseServiceImpl<User, String, UserRepository> implements UserService {
     
     public UserServiceImpl(UserRepository repository) {
         super(repository);
