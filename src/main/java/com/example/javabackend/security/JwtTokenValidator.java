@@ -32,6 +32,11 @@ public class JwtTokenValidator {
     public Authentication toAuthentication(String accessToken) {
         Jwt jwt = jwtDecoder.decode(accessToken);
         Collection<GrantedAuthority> authorities = List.of(); // or map Cognito groups → roles
-        return new UsernamePasswordAuthenticationToken(jwt.getClaimAsString("cognito:username"), jwt, authorities);
+        return new UsernamePasswordAuthenticationToken(jwt.getClaimAsString("sub"), jwt, authorities);
+    }
+
+    public String extractEmail(String idToken) {
+        Jwt jwt = jwtDecoder.decode(idToken);
+        return jwt.getClaimAsString("email");
     }
 } 

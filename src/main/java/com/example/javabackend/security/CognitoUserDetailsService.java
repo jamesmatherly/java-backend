@@ -20,32 +20,24 @@ public class CognitoUserDetailsService implements UserDetailsService {
         this.userRepository = userRepository;
     }
 
+    // Spring's UserDetailsService interface requires this name; the parameter is the Cognito sub (user ID), not a username.
     @Override
     @Transactional
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(username)
-                .orElseGet(() -> createNewUser(username));
-        
-        return createUserDetails(user);
+    public UserDetails loadUserByUsername(String cognitoId) throws UsernameNotFoundException {
+        return userRepository.findById(cognitoId)
+                .map(this::createUserDetails)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found: " + cognitoId));
     }
 
     @Transactional
-    public UserDetails createUserDetails(String username, List<String> groups, String token) {
-        try {
-            User user = userRepository.findByUsername(username).get();
-            
-            return createUserDetails(user);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to create user details: " + e.getMessage(), e);
+    public void ensureUser(String cognitoId, String email) {
+        if (!userRepository.existsById(cognitoId)) {
+            User user = new User();
+            user.setId(cognitoId);
+            user.setUsername(email);
+            user.setEmail(email);
+            userRepository.saveAndFlush(user);
         }
-    }
-
-    @Transactional
-    private User createNewUser(String username) {
-        User user = new User();
-        user.setUsername(username);
-        user.setEmail(username);
-        return userRepository.saveAndFlush(user);
     }
 
     private UserDetails createUserDetails(User user) {

@@ -37,8 +37,8 @@ public class PortfolioController extends BaseController<Portfolio, String> {
     }
 
     @GetMapping("/user")
-    public ResponseEntity<List<GetPortfoliosDTO>> findByUserEmail(@AuthenticationPrincipal String userEmail) {
-        User user = userService.findByEmail(userEmail).get();
+    public ResponseEntity<List<GetPortfoliosDTO>> getForCurrentUser(@AuthenticationPrincipal String cognitoId) {
+        User user = userService.findById(cognitoId).get();
         List<Portfolio> portfolios = portfolioService.findByUserId(user.getId());
         PortfolioMapper mapper = new PortfolioMapper();
 
@@ -48,9 +48,9 @@ public class PortfolioController extends BaseController<Portfolio, String> {
     @PostMapping
     public ResponseEntity<ResponseDTO<Portfolio>> createPortfolio(
         @RequestBody CreatePortfolioDTO dto,
-        @AuthenticationPrincipal String userDetails
+        @AuthenticationPrincipal String cognitoId
     ) {
-        Optional<User> user = userService.findByEmail(userDetails);
+        Optional<User> user = userService.findById(cognitoId);
         ResponseDTO<Portfolio> r = new ResponseDTO<>();
         if (user.isEmpty()) {
             r.setErrorMessage("User not found");

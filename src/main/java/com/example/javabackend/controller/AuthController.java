@@ -39,12 +39,12 @@ public class AuthController {
         AuthTokens tokens = authService.authenticate(request.getEmail(), request.getPassword());
 
         // Set HttpOnly cookies
-        Cookie accessToken = new Cookie("accessToken", tokens.getIdToken());
+        Cookie accessToken = new Cookie("accessToken", tokens.getAccessToken());
         accessToken.setHttpOnly(true);
         accessToken.setSecure(true);
         accessToken.setPath("/");
         response.addCookie(accessToken);
-        Cookie idToken = new Cookie("idToken", tokens.getAccessToken());
+        Cookie idToken = new Cookie("idToken", tokens.getIdToken());
         idToken.setHttpOnly(true);
         idToken.setSecure(true);
         idToken.setPath("/");
@@ -62,12 +62,12 @@ public class AuthController {
         AuthTokens refreshedTokens = authService.refresh(initTokens.getRefreshToken());
 
         // Set HttpOnly cookies
-        Cookie accessToken = new Cookie("accessToken", refreshedTokens.getIdToken());
+        Cookie accessToken = new Cookie("accessToken", refreshedTokens.getAccessToken());
         accessToken.setHttpOnly(true);
         accessToken.setSecure(true);
         accessToken.setPath("/");
         response.addCookie(accessToken);
-        Cookie idToken = new Cookie("idToken", refreshedTokens.getAccessToken());
+        Cookie idToken = new Cookie("idToken", refreshedTokens.getIdToken());
         idToken.setHttpOnly(true);
         idToken.setSecure(true);
         idToken.setPath("/");

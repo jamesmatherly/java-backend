@@ -38,12 +38,12 @@ public class PositionController extends BaseController<Position, String> {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseDTO<Position>> get(@RequestParam Map<String, String> params, @AuthenticationPrincipal String userEmail) {
+    public ResponseEntity<ResponseDTO<Position>> get(@RequestParam Map<String, String> params, @AuthenticationPrincipal String cognitoId) {
         ResponseDTO<Position> r = new ResponseDTO<>();
         if (params.containsKey("userId")) {
             r.setDataList(positionService.findByUserId(params.get("userId")));
-        } else if (params.containsKey("userEmail")) {
-            Optional<User> user = userService.findByEmail(userEmail);
+        } else if (params.containsKey("currentUser")) {
+            Optional<User> user = userService.findById(cognitoId);
             if (user.isPresent()) {
                 r.setDataList(positionService.findByUserId(user.get().getId()));
             }
@@ -59,7 +59,7 @@ public class PositionController extends BaseController<Position, String> {
     }
 
     @PostMapping
-    public ResponseEntity<ResponseDTO<Position>> executeTransaction(@RequestBody TransactionDto dto, @AuthenticationPrincipal String userEmail) {
+    public ResponseEntity<ResponseDTO<Position>> executeTransaction(@RequestBody TransactionDto dto, @AuthenticationPrincipal String cognitoId) {
         ResponseDTO<Position> r = new ResponseDTO<>();
         return ResponseEntity.ok(r);
     }
