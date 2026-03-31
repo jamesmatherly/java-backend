@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,17 +30,13 @@ public class PortfolioController extends BaseController<Portfolio, String> {
         this.userService = userService;
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Portfolio>> findByUserId(@PathVariable String userId) {
-        return ResponseEntity.ok(portfolioService.findByUserId(userId));
-    }
-
     @GetMapping("/user")
-    public ResponseEntity<List<GetPortfoliosDTO>> getForCurrentUser(@AuthenticationPrincipal String cognitoId) {
-        List<Portfolio> portfolios = portfolioService.findByUserId(cognitoId);
+    public ResponseEntity<ResponseDTO<GetPortfoliosDTO>> getForCurrentUser(@AuthenticationPrincipal String cognitoId) {
         PortfolioMapper mapper = new PortfolioMapper();
-
-        return ResponseEntity.ok(portfolios.stream().map(p -> mapper.toPortfoliosDTO(p)).toList());
+        ResponseDTO<GetPortfoliosDTO> r = new ResponseDTO<>();
+        r.setDataList(portfolioService.findByUserId(cognitoId).stream().map(p -> mapper.toPortfoliosDTO(p)).toList());
+        r.setCount(r.getDataList().size());
+        return ResponseEntity.ok(r);
     }
 
     @PostMapping
